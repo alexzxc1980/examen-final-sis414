@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: examen-final-sis414
+    runtime: docker
+    repo: https://github.com/alexzxc1980/examen-final-sis414
+    branch: main
+    region: ohio
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeployTrigger: commit
+    envVars:
+      - key: DB_URL
+        value: jdbc:postgresql://dpg-dc2gl997lnhs73ee04j0-a:5432/aux_prac_4_juan_chambi_db?sslmode=require
+      - key: DB_USERNAME
+        fromDatabase:
+          name: aux-prac-4-juan-chambi-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: aux-prac-4-juan-chambi-db
+          property: password

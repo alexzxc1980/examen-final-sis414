@@ -1,0 +1,40 @@
+<section class="window" aria-labelledby="titulo">
+  <div class="titlebar">ACTIVOS FIJOS</div>
+  <div class="body">
+    <h1 id="titulo">Consultar asignación de un activo</h1>
+    <p class="intro">Busca un activo por su código para conocer su oficina y responsable.</p>
+
+    <form [formGroup]="form" (ngSubmit)="buscar()" [attr.aria-busy]="buscando()" novalidate>
+      <label for="codigo">Código del activo</label>
+      <div class="search">
+        <input id="codigo" type="text" [formControl]="codigo" maxlength="15"
+          placeholder="Ej.: PROY-001" autocomplete="off" spellcheck="false"
+          [readOnly]="buscando()" [attr.aria-invalid]="codigo.touched && codigo.invalid"
+          aria-describedby="mensaje" />
+        <button type="submit" [disabled]="buscando()">{{ buscando() ? 'Buscando…' : 'Buscar' }}</button>
+      </div>
+    </form>
+
+    <div id="mensaje" aria-live="polite">
+      @if (buscando()) {
+        <p class="status">Consultando el activo…</p>
+      } @else if (error(); as mensaje) {
+        <p class="error" role="alert">{{ mensaje }}</p>
+      }
+    </div>
+
+    @if (asignacion(); as activo) {
+      <section class="result" aria-labelledby="resultado" aria-live="polite">
+        <h2 id="resultado">Asignación del activo</h2>
+        <dl>
+          <div><dt>Código</dt><dd>{{ activo.codigo }}</dd></div>
+          <div><dt>Descripción</dt><dd>{{ activo.descripcion }}</dd></div>
+          <div><dt>Oficina</dt><dd>{{ activo.oficina }}</dd></div>
+          <div><dt>Responsable</dt><dd>{{ activo.responsable }}</dd></div>
+        </dl>
+      </section>
+    } @else if (!buscando() && !error()) {
+      <p class="empty">Ingresa el código y pulsa Buscar para ver la asignación.</p>
+    }
+  </div>
+</section>

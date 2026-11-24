@@ -1,0 +1,47 @@
+<header class="header" [style.background-image]="headerBackground">
+  <button type="button" class="burger" aria-label="Abrir menú"
+    [attr.aria-expanded]="sidebarOpen()" (click)="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+  <img class="header-img" src="assets/images/bannervsiaf.jpg" alt="vSIAF - Sistema de Activos Fijos" />
+  @if (session(); as s) {
+    <div class="user">
+      <span class="avatar" aria-hidden="true">{{ s.usuario.charAt(0).toUpperCase() }}</span>
+      <div class="user-data"><strong>USUARIO:</strong> {{ s.usuario }}</div>
+    </div>
+  }
+</header>
+
+<div class="body">
+  @if (sidebarOpen()) {
+    <div class="backdrop" (click)="toggleSidebar()"></div>
+  }
+  <nav class="sidebar" [class.open]="sidebarOpen()" aria-label="Menú principal">
+    <h2 class="sidebar-title">MENU PRINCIPAL</h2>
+    <div class="menu">
+      <button type="button" class="menu-btn" routerLink="/activos"
+        aria-current="page" (click)="sidebarOpen.set(false)">
+        <span class="menu-btn-inner"><u>A</u>ctivos Fijos</span>
+      </button>
+    </div>
+  </nav>
+  <main class="main">
+    @if (session(); as s) {
+      <div class="info">
+        @if (s.entidad; as e) {
+          <div><strong>ENTIDAD:</strong><span>{{ e.codigo }}</span><span>{{ e.nombre }}</span></div>
+        }
+        @if (s.unidad; as u) {
+          <div><strong>UNIDAD:</strong><span>{{ u.codigo }}</span><span>{{ u.nombre }}</span></div>
+        }
+      </div>
+    }
+    <section class="content" [style.background-image]="background">
+      <router-outlet />
+    </section>
+    <footer class="footer">
+      <span class="student">Juan Alex Chambi Montes · Examen final SIS-414</span>
+      <button type="button" class="foot-btn foot-btn--exit" (click)="logout()"><u>S</u>alir</button>
+    </footer>
+  </main>
+</div>
